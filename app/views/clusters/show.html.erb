@@ -1,0 +1,40 @@
+<p>
+  <b>Name:</b>
+  <%=h @cluster.name %>
+</p>
+
+<p>
+  <b>State:</b>
+  <%=h @cluster.state.name%>
+</p>
+
+<p>
+  <b>Release:</b>
+  <%=h @cluster.release.name %>
+</p>
+
+<p>
+	<b>Team Assignments:</b>
+<table>
+  <tr>
+    <th>Test Team</th>
+    <th>Signed off</th>
+  </tr>
+	<% for team_assignment in @cluster.team_assignments.assignment_is(State.find_by_name('RTT')) %>
+  <tr>
+    <td><%=h team_assignment.team.name %></td>
+    <td><%=h team_assignment.signed_off %></td>
+    <td><%= link_to 'Delete', team_assignment, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+	<% end %>
+</table>
+
+<%= link_to 'New team assignment', new_team_assignment_path(:cluster_id => @cluster) %>
+		
+	
+</p>
+
+<p>
+<%= link_to 'Edit', edit_cluster_path(@cluster) %> |
+<%= link_to 'Back', edit_release_path(@cluster.release) %>
+</p>

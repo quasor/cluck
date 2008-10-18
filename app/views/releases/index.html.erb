@@ -1,0 +1,19 @@
+<h1>Choose a release</h1>
+
+<table>
+
+<% for release in @releases.reverse %>
+  <tr>
+    <td><h2><%= link_to release.name, release %></h2></td>
+    <!-- <td><%=link_to release.release_date, release %></td> -->
+<% if admin? %>
+    <td><%= link_to 'Edit', edit_release_path(release) %></td>
+    <td><%= link_to 'Delete', release, :confirm => 'Are you sure?', :method => :delete %></td>
+<% end %>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New release', new_release_path if admin?%>

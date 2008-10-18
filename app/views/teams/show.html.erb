@@ -1,0 +1,30 @@
+<h1>
+	<%=link_to(h(@release.name), @release) %> \	
+	<%=h @team.name %>
+</h1>
+
+<% form_for @team, :url => release_team_path(@release,@team) do |form|%>
+<table border="0">
+<h2>Tasks</h2>
+	<tr>
+		<th>Cluster</th>
+		<th>Status</th>
+		<th>Signed Off</th>
+	</tr>
+	<% for @team_assignment in @team_assignments do %>
+	  <% fields_for 'team_assignment[]' do |f| %>
+		<tr>
+			<td><%= error_messages_for :team_assignment %><%= @team_assignment.cluster.name%></td>
+			<td><%= @team_assignment.cluster.state.name%></td>
+		    <td align="center"><%= f.check_box :signed_off, :onclick => "$('button').show()"%></td>
+		</tr>
+		<% end %>
+	<% end %>
+</table>
+	Notes:<br />
+	<%= text_area_tag 'notes' %>
+    <%= submit_tag "Update", :confirm => 'Are you sure?', :style => 'display:none', :id => "button"%>
+<% end %>
+
+<%#= link_to 'Edit', edit_team_path(@team) %> 
+<%#= link_to 'Back', teams_path %>

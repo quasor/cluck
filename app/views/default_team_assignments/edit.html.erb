@@ -1,0 +1,20 @@
+<h1>Editing default_team_assignment</h1>
+
+<% form_for(@default_team_assignment) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :team_id %><br />
+    <%= f.text_field :team_id %>
+  </p>
+  <p>
+    <%= f.label :state_id %><br />
+    <%= f.text_field :state_id %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @default_team_assignment %> |
+<%= link_to 'Back', default_team_assignments_path %>

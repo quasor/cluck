@@ -1,0 +1,34 @@
+  <h1><%=h @release.name %> - <%=h @release.release_date %></h1>
+  <%= link_to 'Edit', edit_release_path(@release) if admin?%> 
+  <%= link_to 'Report', release_team_assignments_path(@release) if admin?%> 
+
+<h2>Clusters</h2>
+<table>
+<tr>
+	<th><%= link_to_unless_current 'Cluster', :sort => :cluster %></th>
+	<th><%= link_to_unless_current 'Status', :sort => :status %></th>
+	<th><%= link_to_unless_current 'Owner', :sort => :owner %></th>
+</tr>
+<% for cluster in @clusters do %>
+	<tr>
+	<td><%= cluster.name%></td>
+	<td><%= cluster.state.name%></td>
+	<td>
+		<% for team_assignment in cluster.current_team_assignments %>
+			<%= link_to team_assignment.team.name, release_team_path(@release,team_assignment.team)%><%= ''+image_tag('thumbs_up_icon.gif')+'' if team_assignment.signed_off%>&nbsp;
+		<% end %>
+	</td>
+	<td></td>
+</tr>
+<% end %>
+</table>
+<h2>Teams</h2>
+<table>
+<% for team in @teams do %>
+	<tr>
+	<td><%= link_to team.name, release_team_path(@release,team)%></td>
+</tr>
+<% end %>
+</table>
+
+

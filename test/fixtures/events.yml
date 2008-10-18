@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  action: MyString
+  release_id: 1
+  team_assignment_id: 1
+  cluster_id: 1
+  signed_off: false
+  state_id: 1
+  updated_by: MyString
+
+two:
+  action: MyString
+  release_id: 1
+  team_assignment_id: 1
+  cluster_id: 1
+  signed_off: false
+  state_id: 1
+  updated_by: MyString

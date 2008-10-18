@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title>Releases: <%= controller.action_name %></title>
+  <%= stylesheet_link_tag 'scaffold' %>
+  <%= javascript_include_tag 'prototype' %>
+</head>
+
+<body>
+<div style="border-bottom:1px solid black; padding-bottom:4px; font-weight:bold">
+<span style="float:right">
+<%= "Welcome #{session[:username]}" unless session[:username].blank?%>
+<%#= link_to_unless_current 'Login', admin_releases_path unless current_user%>
+<%= link_to_unless_current 'Login', :controller => :login unless current_user%>
+<%= link_to_unless_current 'Logout', logout_path if current_user%>
+
+<%= '<b>Admin:</b>' if admin?%>
+<%= link_to_unless_current 'Teams', teams_path if admin?%>
+<%= link_to_unless_current 'Clusters', clusters_path if admin?%>
+</span>
+<%= link_to_unless_current 'Releases', releases_path %>
+</div>
+<span style="float:right;text-align:center">
+<%= image_tag 'cluck.jpg'%>
+<div style="position:relative;top:-220px;font-weight:bold">CLUCK</div>
+</span>
+
+<p style="color: green"><%= flash[:notice] %></p>
+
+<%= yield  %>
+
+</body>
+</html>

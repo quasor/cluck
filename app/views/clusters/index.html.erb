@@ -1,0 +1,24 @@
+<h1>Listing clusters</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>State</th>
+    <th>Release</th>
+  </tr>
+
+<% for cluster in @clusters %>
+  <tr>
+    <td><%=h cluster.name %></td>
+    <td><%=h cluster.state_id %></td>
+    <td><%=h cluster.release_id %></td>
+    <td><%= link_to 'Show', cluster %></td>
+    <td><%= link_to 'Edit', edit_cluster_path(cluster) %></td>
+    <td><%= link_to 'Delete', cluster, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New cluster', new_cluster_path %>

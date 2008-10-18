@@ -1,0 +1,28 @@
+<h1>Editing team_assignment</h1>
+
+<% form_for(@team_assignment) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :cluster_id %><br />
+    <%= f.text_field :cluster_id %>
+  </p>
+  <p>
+    <%= f.label :team_id %><br />
+    <%= f.text_field :team_id %>
+  </p>
+  <p>
+    <%= f.label :state_id %><br />
+    <%= f.text_field :state_id %>
+  </p>
+  <p>
+    <%= f.label :signed_off %><br />
+    <%= f.check_box :signed_off %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @team_assignment %> |
+<%= link_to 'Back', team_assignments_path %>

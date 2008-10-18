@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  cluster_id: 1
+  team_id: 1
+  state_id: 1
+  signed_off: false
+
+two:
+  cluster_id: 1
+  team_id: 1
+  state_id: 1
+  signed_off: false

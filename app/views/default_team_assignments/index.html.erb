@@ -1,0 +1,22 @@
+<h1>Listing default_team_assignments</h1>
+
+<table>
+  <tr>
+    <th>Team</th>
+    <th>State</th>
+  </tr>
+
+<% for default_team_assignment in @default_team_assignments %>
+  <tr>
+    <td><%=h default_team_assignment.team_id %></td>
+    <td><%=h default_team_assignment.state_id %></td>
+    <td><%= link_to 'Show', default_team_assignment %></td>
+    <td><%= link_to 'Edit', edit_default_team_assignment_path(default_team_assignment) %></td>
+    <td><%= link_to 'Delete', default_team_assignment, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New default_team_assignment', new_default_team_assignment_path %>

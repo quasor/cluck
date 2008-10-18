@@ -1,0 +1,39 @@
+<h1>Editing release <%= h @release.name %></h1>
+
+<% form_for(@release) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :release_date %><br />
+    <%= f.date_select :release_date %>
+  </p>
+  <p>
+    <%= f.submit "Update" %> or <%= link_to 'Cancel', @release %> 
+  </p>
+<% end %>
+
+
+<h2>Clusters</h2>
+<table border="1" cellpadding="3" cellspacing="0">
+<tr>
+	<th>Cluster</th>
+	<th>Test Team</th>
+</tr>
+<% for cluster in @release.clusters do %>
+	<tr>
+	<td><%= cluster.name%></td>
+	<td>
+		<% for team_assignment in cluster.team_assignments.find(:all, :include => :state, :conditions => {'states.name' => "RTT"}) %>
+			<%= link_to team_assignment.team.name, release_team_path(@release,team_assignment.team)%><br />
+		<% end %>
+	</td>
+	<td>
+		<%= link_to 'Edit', (cluster) %>
+	</td>
+</tr>
+<% end %>
+</table>

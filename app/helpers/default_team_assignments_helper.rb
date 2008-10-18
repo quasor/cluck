@@ -1,0 +1,2 @@
+module DefaultTeamAssignmentsHelper
+end

@@ -1,0 +1,37 @@
+<h1><%=@release.name%> Report</h1>
+<style>
+.report th { color:white; background-color:black;padding:8px;}
+.report td { border:solid 1px #DDD; padding:0px 8px 0px 8px;}
+</style>
+<table class="report" cellspacing="0">
+  <tr>
+    <th>Cluster</th>
+    <th>Team</th>
+    <th>Before</th>
+	<th>After</th>
+    <th>Signed off</th>
+    <th>At</th>
+    <th>By</th>
+  </tr>
+
+<% for team_assignment in @team_assignments %>
+  <tr>
+    <td><%=h team_assignment.cluster.name %></td>
+    <td><%=h team_assignment.team_assignment.team.name %></td>
+    <td><%=h team_assignment.state.name %></td>
+    <td><%=h team_assignment.action %></td>
+    <td><%=h team_assignment.signed_off %></td>
+    <td><%=h team_assignment.updated_at.to_s(:short) %></td>
+    <td><%=h team_assignment.updated_by %></td>
+<% if false %>
+    <td><%= link_to 'Show', team_assignment %></td>
+    <td><%= link_to 'Edit', edit_team_assignment_path(team_assignment) %></td>
+    <td><%= link_to 'Delete', team_assignment, :confirm => 'Are you sure?', :method => :delete %></td>
+<% end %> 
+  </tr>
+
+  <% end %>
+</table>
+
+<br />
+
