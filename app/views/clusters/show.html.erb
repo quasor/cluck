@@ -1,12 +1,12 @@
-<p>
-  <b>Name:</b>
-  <%=h @cluster.name %>
-</p>
+<h1>
+	<%=link_to(h(@cluster.release.name), @cluster.release) %> \	
+	<%=h @cluster.name %>
+</h1>
 
-<p>
-  <b>State:</b>
+<h2>
   <%=h @cluster.state.name%>
-</p>
+  <%= link_to 'Edit', edit_cluster_path(@cluster) if admin?%> 
+</h2>
 
 <p>
   <b>Release:</b>
@@ -24,17 +24,28 @@
   <tr>
     <td><%=h team_assignment.team.name %></td>
     <td><%=h team_assignment.signed_off %></td>
+	<% if admin? %>
     <td><%= link_to 'Delete', team_assignment, :confirm => 'Are you sure?', :method => :delete %></td>
+	<% end %>
   </tr>
 	<% end %>
 </table>
+<%= link_to 'New team assignment', new_team_assignment_path(:cluster_id => @cluster) if admin?%>
+<h2>Notes</h2>
+<% for note in @cluster.notes %>
+	<p>
+	<div style="border-top: solid 1px #ccc">
+	<b><%= note.created_by %></b> on <%= note.created_at%> :
+	</div>
+	<%= note.body %>
+	</p>
+<% end %>
 
-<%= link_to 'New team assignment', new_team_assignment_path(:cluster_id => @cluster) %>
 		
 	
 </p>
-
+<% if admin? %>
 <p>
-<%= link_to 'Edit', edit_cluster_path(@cluster) %> |
 <%= link_to 'Back', edit_release_path(@cluster.release) %>
 </p>
+<% end %>

@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :notes
+
   map.resources :events
 
   map.resources :events
@@ -9,9 +11,11 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :team_assignments
 
-  map.resources :teams
+  map.resources :teams do |team|
+	team.resources :team_assignments
+  end
 
-  map.resources :releases, :collection => {:admin => :get } do |release|
+  map.resources :releases, :collection => {:admin => :get }, :member => {:report => :get, :dashboard => :get} do |release|
 	release.resources :teams
 	release.resources :team_assignments
   end

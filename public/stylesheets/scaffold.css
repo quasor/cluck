@@ -23,7 +23,8 @@ a:hover { color: #fff; background-color:#000; }
   background-color: red;
   display: table;
 }
-
+th { text-align:left; }
+table td { padding-right: 60px }
 #errorExplanation {
   width: 400px;
   border: 2px solid red;

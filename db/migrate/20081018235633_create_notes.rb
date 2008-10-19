@@ -3,7 +3,7 @@ class CreateNotes < ActiveRecord::Migration
     create_table :notes do |t|
       t.text :body
       t.string :created_by
-      t.integer :notable_type
+      t.string :notable_type
       t.integer :notable_id
 
       t.timestamps

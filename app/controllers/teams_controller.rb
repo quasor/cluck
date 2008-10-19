@@ -16,7 +16,7 @@ class TeamsController < ApplicationController
   def show
     @team = Team.find(params[:id])
 	if params[:release_id].nil?
-		return redirect_to releases_path
+		return redirect_to(releases_path)
 	end
     @release = Release.find(params[:release_id])
 	@clusters = @team.clusters.find_all_by_release_id(@release.id)
@@ -71,7 +71,15 @@ class TeamsController < ApplicationController
     @release = Release.find(params[:release_id])
 	@clusters = @team.clusters.find_all_by_release_id(@release.id)
 	@team_assignments = @clusters.collect { |cluster| cluster.team_assignments.find(:all, :conditions => {:team_id => @team.id, :state_id => cluster.state_id}) }.flatten.uniq
-
+	@clusters.each do |c|
+		unless params[:cluster][c.id.to_s].nil?
+			unless params[:cluster][c.id.to_s][:body].blank?
+				c.notes << Note.create(:body => params[:cluster][c.id.to_s][:body], :created_by => current_user)
+			end
+		end
+	end
+	
+	
 	@team.attributes = params[:team] if admin?
 	@team_assignments.each do |t| 
 		t.attributes = params[:team_assignment][t.id.to_s] if params[:team_assignment][t.id.to_s] 
@@ -80,7 +88,10 @@ class TeamsController < ApplicationController
     respond_to do |format|
       if @team.valid? && @team_assignments.all?(&:valid?)
 		@team.save! if admin?
-		@team_assignments.each(&:save!)
+		@team_assignments.each do |ta|
+			ta.updated_by = current_user
+			ta.save!
+		end 
         flash[:notice] = 'Team was successfully updated.'
         format.html { redirect_to release_team_path(@release,@team) }
         format.xml  { head :ok }

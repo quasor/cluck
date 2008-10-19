@@ -16,7 +16,7 @@ class ReleasesController < ApplicationController
   # GET /releases/1
   # GET /releases/1.xml
   def show
-	
+	@refresh_interval = 60
     @release = Release.find(params[:id] )
 	@release.update_default_assignments
 	@order = :state_id
@@ -36,6 +36,43 @@ class ReleasesController < ApplicationController
       format.xml  { render :xml => @release }
     end
   end
+
+  # GET /releases/1/dashboard
+  # GET /releases/1/dashboard.xml
+  def dashboard
+	@refresh_interval = 60
+    @release = Release.find(params[:id] )
+	@release.update_default_assignments
+	@order = :state_id
+	case params[:sort]
+	when 'cluster'
+		@order = 'clusters.name'
+	when 'status'
+		@order = :state_id
+	when 'owner'
+		@order = :state_id
+	end
+	@clusters = @release.clusters.find(:all, :order => @order)
+	@teams = Team.find(:all)
+	
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @release }
+    end
+  end
+  
+  #  GET /releases/1/report
+  # GET /releases/1//report.xml
+  def report
+	@release = Release.find(params[:id]) unless params[:id].blank?
+    @team_assignments = Event.find(:all, :order => :updated_at, :conditions => {:release_id => @release})
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @team_assignments }
+    end
+  end
+
 
   # GET /releases/new
   # GET /releases/new.xml

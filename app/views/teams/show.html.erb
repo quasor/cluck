@@ -3,28 +3,42 @@
 	<%=h @team.name %>
 </h1>
 
+
 <% form_for @team, :url => release_team_path(@release,@team) do |form|%>
 <table border="0">
 <h2>Tasks</h2>
 	<tr>
 		<th>Cluster</th>
 		<th>Status</th>
-		<th>Signed Off</th>
+		<th>Sign Off</th>
+		<th>Notes</th>
+		<th>Last Note</th>
 	</tr>
 	<% for @team_assignment in @team_assignments do %>
 	  <% fields_for 'team_assignment[]' do |f| %>
 		<tr>
-			<td><%= error_messages_for :team_assignment %><%= @team_assignment.cluster.name%></td>
+			<td><%= error_messages_for :team_assignment %><%= link_to @team_assignment.cluster.name, @team_assignment.cluster %></td>
 			<td><%= @team_assignment.cluster.state.name%></td>
 		    <td align="center"><%= f.check_box :signed_off, :onclick => "$('button').show()"%></td>
+			<%
+			@cluster = @team_assignment.cluster
+			fields_for 'cluster[]' do |fn| %>
+			<td><%=fn.text_area :body, :rows => 4%></td>
+			<td>
+				<% note = @cluster.notes.last%>
+				<% if note %>
+				<b><%= note.created_by %></b> on <%= note.created_at.to_s(:short)%>:<br><%= note.body%>
+				<% end %>			
+			</td>
+			<% end %>
 		</tr>
 		<% end %>
 	<% end %>
-</table>
-	Notes:<br />
-	<%= text_area_tag 'notes' %>
+</table>	
     <%= submit_tag "Update", :confirm => 'Are you sure?', :style => 'display:none', :id => "button"%>
 <% end %>
+<div id="tasks">
+</div>
 
 <%#= link_to 'Edit', edit_team_path(@team) %> 
 <%#= link_to 'Back', teams_path %>

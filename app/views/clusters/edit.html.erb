@@ -7,11 +7,12 @@
     <%= f.label :name %><br />
     <%= f.text_field :name %>
   </p>
-<!--
   <p>
     <%= f.label :state_id %><br />
-    <%= f.text_field :state_id %>
+    <%= f.collection_select :state_id, State.find(:all), :id, :name %>
   </p>
+
+ <!--
   <p>
     <%= f.label :release_id %><br />
     <%= f.text_field :release_id %>

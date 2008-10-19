@@ -15,6 +15,7 @@ class TeamAssignment < ActiveRecord::Base
 		record.cluster.reload
 		action = record.cluster.state.name
 	end
+	
 	Event.create(
 		:release_id => record.cluster.release.id,
 		:state_id => record.state_id,
@@ -22,6 +23,6 @@ class TeamAssignment < ActiveRecord::Base
 		:cluster_id => record.cluster.id, 
 		:team_assignment_id => record.id, 
 		:signed_off => record.signed_off,
-		:updated_by => record.updated_by)
+		:updated_by => record.updated_by) if record.signed_off == true
   end
 end

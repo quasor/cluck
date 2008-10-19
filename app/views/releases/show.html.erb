@@ -1,9 +1,10 @@
-  <h1><%=h @release.name %> - <%=h @release.release_date %></h1>
+  <h1><%=h @release.name %></h1>
   <%= link_to 'Edit', edit_release_path(@release) if admin?%> 
-  <%= link_to 'Report', release_team_assignments_path(@release) if admin?%> 
+  <%= link_to 'Report', report_release_path(@release) if admin?%> 
+  <%= link_to_unless_current 'Exec Dashboard', dashboard_release_path(@release) if admin?%> 
 
 <h2>Clusters</h2>
-<table>
+<table border="0">
 <tr>
 	<th><%= link_to_unless_current 'Cluster', :sort => :cluster %></th>
 	<th><%= link_to_unless_current 'Status', :sort => :status %></th>
@@ -11,11 +12,13 @@
 </tr>
 <% for cluster in @clusters do %>
 	<tr>
-	<td><%= cluster.name%></td>
+	<td><%= link_to cluster.name, cluster%></td>
 	<td><%= cluster.state.name%></td>
 	<td>
 		<% for team_assignment in cluster.current_team_assignments %>
-			<%= link_to team_assignment.team.name, release_team_path(@release,team_assignment.team)%><%= ''+image_tag('thumbs_up_icon.gif')+'' if team_assignment.signed_off%>&nbsp;
+			<span style="padding-right:20px;">
+			<%= link_to team_assignment.team.name, release_team_path(@release,team_assignment.team)%><%= ''+image_tag('thumbs_up_icon.gif')+'' if team_assignment.signed_off%>
+			</span>
 		<% end %>
 	</td>
 	<td></td>

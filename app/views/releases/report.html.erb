@@ -1,3 +1,8 @@
+<h1><%=@release.name%> Report</h1>
+<style>
+.report th { color:white; background-color:black;padding:8px;}
+.report td { border:solid 1px #DDD; padding:0px 8px 0px 8px;}
+</style>
 <table class="report" cellspacing="0">
   <tr>
     <th>Cluster</th>
@@ -12,7 +17,7 @@
 <% for team_assignment in @team_assignments %>
   <tr>
     <td><%=h team_assignment.cluster.name %></td>
-    <td><%=h team_assignment.team_assignment.team.name %></td>
+    <td><%=team_assignment.team_assignment.nil? ? "Admin" : team_assignment.team_assignment.team.name %></td>
     <td><%=h team_assignment.state.name %></td>
     <td><%=h team_assignment.action %></td>
     <td><%=h team_assignment.signed_off %></td>
@@ -29,3 +34,4 @@
 </table>
 
 <br />
+

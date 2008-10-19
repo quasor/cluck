@@ -59,10 +59,18 @@ class ClustersController < ApplicationController
   # PUT /clusters/1.xml
   def update
     @cluster = Cluster.find(params[:id])
-
+	@state_id = @cluster.state_id
+	action = @cluster.state.name
     respond_to do |format|
       if @cluster.update_attributes(params[:cluster])
-        flash[:notice] = 'Cluster was successfully updated.'
+	  	Event.create(
+		:release_id => @cluster.release.id,
+		:state_id => @state_id,
+		:action => @cluster.reload.state.name,
+		:cluster_id => @cluster.id, 
+		:updated_by => current_user)
+
+		flash[:notice] = 'Cluster was successfully updated.'
         format.html { redirect_to(@cluster) }
         format.xml  { head :ok }
       else
