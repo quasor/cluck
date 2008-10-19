@@ -1,0 +1,23 @@
+<p>
+  <b>Body:</b>
+  <%=h @note.body %>
+</p>
+
+<p>
+  <b>Created by:</b>
+  <%=h @note.created_by %>
+</p>
+
+<p>
+  <b>Notable type:</b>
+  <%=h @note.notable_type %>
+</p>
+
+<p>
+  <b>Notable:</b>
+  <%=h @note.notable_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_note_path(@note) %> |
+<%= link_to 'Back', notes_path %>
