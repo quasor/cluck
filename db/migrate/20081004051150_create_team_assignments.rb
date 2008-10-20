@@ -4,7 +4,7 @@ class CreateTeamAssignments < ActiveRecord::Migration
       t.integer :cluster_id
       t.integer :team_id
       t.integer :state_id
-      t.boolean :signed_off
+      t.boolean :signed_off, :default => false
 
       t.timestamps
     end

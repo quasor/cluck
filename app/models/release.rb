@@ -6,7 +6,7 @@ class Release < ActiveRecord::Base
 	for dta in DefaultTeamAssignment.all
 		for cluster in clusters
 			if TeamAssignment.find(:first,:conditions => {:cluster_id => cluster.id, :team_id => dta.team_id, :state_id => dta.state_id}).nil?
-				TeamAssignment.create(:cluster_id => cluster.id, :team_id => dta.team_id, :state_id => dta.state_id)
+				TeamAssignment.create(:cluster_id => cluster.id, :team_id => dta.team_id, :state_id => dta.state_id, :signed_off => :false)
 			end
 		end
 	end

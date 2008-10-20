@@ -18,7 +18,7 @@ class ReleasesController < ApplicationController
   def show
 	@refresh_interval = 60
     @release = Release.find(params[:id] )
-	@release.update_default_assignments
+	  @release.update_default_assignments
 	@order = :state_id
 	case params[:sort]
 	when 'cluster'
