@@ -28,9 +28,9 @@ class TeamAssignmentsController < ApplicationController
   # GET /team_assignments/new.xml
   def new
     @team_assignment = TeamAssignment.new
-	@cluster = Cluster.find(params[:cluster_id])
-	@team_assignment.cluster = @cluster
-	@team_assignment.release = @cluster.release
+  	@cluster = Cluster.find(params[:cluster_id])
+  	@team_assignment.cluster = @cluster
+  	@team_assignment.release_id = @cluster.release_id
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @team_assignment }

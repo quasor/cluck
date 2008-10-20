@@ -8,12 +8,8 @@
     <%= f.text_field :name %>
   </p>
   <p>
-    <%= f.label :state_id %><br />
-    <%= f.text_field :state_id %>
-  </p>
-  <p>
     <%= f.label :release_id %><br />
-    <%= f.text_field :release_id %>
+    <%= f.collection_select :release_id, Release.find(:all), :id, :name, {:prompt => :true} %>
   </p>
   <p>
     <%= f.submit "Create" %>

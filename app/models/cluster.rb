@@ -3,14 +3,15 @@ class Cluster < ActiveRecord::Base
   belongs_to :release
   has_many :team_assignments, :dependent => :destroy
   has_many :notes, :as => :notable
+  
   def current_team_assignments
-	team_assignments.find(:all, :conditions => ['state_id = ?',state.id]) 
+	  team_assignments.find(:all, :conditions => ['state_id = ?',state.id]) 
   end
   after_update do |record|
-	record.team_assignments.find(:all, :conditions => ['state_id >= ?',record.state.id], :order => 'state_id ASC').each do |ta|
-		ta.signed_off = false
-		ta.save
-	end
+  	record.team_assignments.find(:all, :conditions => ['state_id >= ?',record.state.id], :order => 'state_id ASC').each do |ta|
+  		ta.signed_off = false
+  		ta.save
+  	end
   end
   
   def body

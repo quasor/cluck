@@ -42,6 +42,7 @@ class ClustersController < ApplicationController
   # POST /clusters.xml
   def create
     @cluster = Cluster.new(params[:cluster])
+    @cluster.state_id = State.find(:first, :order => 'sequence_number ASC').id
 
     respond_to do |format|
       if @cluster.save
