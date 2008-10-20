@@ -9,7 +9,7 @@
 <% for cluster in @clusters do %>
 	<tr>
 	<td>
-		<span style="background-color:<%= cluster.state.id != State.last.id ? "red" : "green" %>;padding:10px;margin-right:10px;"></span>
+		<span style="background-color:<%= cluster.state.id != State.last.id ? "red" : "green" %>;padding:10px;margin-right:10px;">&nbsp;</span>
 		<%= cluster.name %></td>
 	<td><%= cluster.state.id != State.last.id ? "Shunted" : "Released To Web" %></td>
 </tr>
