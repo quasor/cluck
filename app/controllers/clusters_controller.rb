@@ -46,6 +46,7 @@ class ClustersController < ApplicationController
 
     respond_to do |format|
       if @cluster.save
+        @cluster.release.update_default_assignments  	  
         flash[:notice] = 'Cluster was successfully created.'
         format.html { redirect_to(@cluster) }
         format.xml  { render :xml => @cluster, :status => :created, :location => @cluster }
