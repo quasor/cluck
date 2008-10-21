@@ -25,7 +25,7 @@
     <td><%=h team_assignment.team.name %></td>
     <td><%=h team_assignment.signed_off %></td>
 	<% if admin? %>
-    <td><%= link_to 'Delete', team_assignment, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Delete Assignment', team_assignment, :confirm => 'Are you sure?', :method => :delete %></td>
 	<% end %>
   </tr>
 	<% end %>
