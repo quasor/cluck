@@ -23,6 +23,7 @@ class TeamsController < ApplicationController
 	#@team_assignments = @team.team_assignments.find(:all, :include => {:cluster => :release}, 
 	#	:conditions =>{'releases.id' => @release.id})
 	@team_assignments = @clusters.collect { |cluster| cluster.team_assignments.find(:all, :conditions => {:team_id => @team.id, :state_id => cluster.state_id}) }.flatten.uniq
+	@team_assignments = @team_assignments.sort_by { |r| r.cluster.state.sequence_number }
 	#@team_assignments = []
 	#@clusters.collect{}
     respond_to do |format|

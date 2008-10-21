@@ -3,6 +3,8 @@ class Cluster < ActiveRecord::Base
   belongs_to :release
   has_many :team_assignments, :dependent => :destroy
   has_many :notes, :as => :notable
+  validates_presence_of :release_id
+  validates_uniqueness_of :name, :scope => :release_id
   
   def current_team_assignments
 	  team_assignments.find(:all, :conditions => ['state_id = ?',state.id]) 
