@@ -3,7 +3,7 @@ class TeamAssignment < ActiveRecord::Base
   belongs_to :cluster
   belongs_to :team
   belongs_to :state
-  validates_uniqueness_of :team_id, :scope => [:cluster_id, :state_id]
+#  validates_uniqueness_of :team_id, :scope => [:cluster_id, :state_id]
   named_scope :assignment_is, lambda {|s| { :conditions => {:state_id => s.id} } }
 
   after_update do |record|
