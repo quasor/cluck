@@ -53,7 +53,7 @@ class TeamAssignmentsController < ApplicationController
         format.html { redirect_to(@team_assignment.cluster) }
         format.xml  { render :xml => @team_assignment, :status => :created, :location => @team_assignment }
       else
-        format.html { render :action => "new" }
+        format.html { render :action => "new", :cluster_id => @team_assignment.cluster }
         format.xml  { render :xml => @team_assignment.errors, :status => :unprocessable_entity }
       end
     end
