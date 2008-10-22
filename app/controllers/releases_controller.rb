@@ -44,6 +44,7 @@ class ReleasesController < ApplicationController
     @release = Release.find(params[:id] )
 	@release.update_default_assignments
 	@order = :state_id
+	@end_state_id = State.find(:first, :order => "sequence_number DESC").id
 	case params[:sort]
 	when 'cluster'
 		@order = 'clusters.name'
