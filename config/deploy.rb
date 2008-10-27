@@ -19,9 +19,9 @@ set :deploy_to, "/var/www/#{application}"
 
 set :use_sudo, false
 
-role :app, '192.168.0.169'
-role :web, '192.168.0.169'
-role :db,  '192.168.0.169', :primary => true
+role :app, 'cluck.gotdns.com'
+role :web, 'cluck.gotdns.com'
+role :db,  'cluck.gotdns.com', :primary => true
 
 namespace :deploy do
   desc "Restarting mod_rails with restart.txt"
