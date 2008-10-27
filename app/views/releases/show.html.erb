@@ -1,7 +1,7 @@
   <h1><%=h @release.name %></h1>
   <%= link_to 'Edit', edit_release_path(@release) if admin?%> 
-  <%= link_to 'Report', report_release_path(@release) if admin?%> 
-  <%= link_to_unless_current 'Exec Dashboard', dashboard_release_path(@release) if admin?%> 
+  <%= link_to 'Report', report_release_path(@release) %> 
+  <%= link_to_unless_current 'Exec Dashboard', dashboard_release_path(@release) %> 
 
 <h2>Clusters</h2>
 <table border="0">

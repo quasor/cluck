@@ -11,7 +11,7 @@ class Cluster < ActiveRecord::Base
   end
   after_update do |record|
   	record.team_assignments.find(:all, :conditions => ['state_id >= ?',record.state.id], :order => 'state_id ASC').each do |ta|
-  		ta.signed_off = false
+#  		ta.signed_off = false
   		ta.save
   	end
   end

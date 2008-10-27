@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081018235633) do
+ActiveRecord::Schema.define(:version => 20081025185612) do
 
   create_table "clusters", :force => true do |t|
     t.string   "name"
@@ -18,6 +18,9 @@ ActiveRecord::Schema.define(:version => 20081018235633) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "clusters", ["state_id"], :name => "index_clusters_on_state_id"
+  add_index "clusters", ["release_id", "state_id"], :name => "index_clusters_on_release_id_and_state_id"
 
   create_table "default_team_assignments", :force => true do |t|
     t.integer  "team_id"
@@ -64,13 +67,13 @@ ActiveRecord::Schema.define(:version => 20081018235633) do
   create_table "team_assignment_versions", :force => true do |t|
     t.integer  "team_assignment_id"
     t.integer  "version"
-    t.integer  "cluster_id"
-    t.integer  "team_id"
-    t.integer  "state_id"
+    t.integer  "cluster_id",         :limit => 8
+    t.integer  "team_id",            :limit => 8
+    t.integer  "state_id",           :limit => 8
     t.boolean  "signed_off"
     t.datetime "updated_at"
     t.string   "updated_by"
-    t.integer  "release_id"
+    t.integer  "release_id",         :limit => 8
   end
 
   create_table "team_assignments", :force => true do |t|
@@ -81,9 +84,12 @@ ActiveRecord::Schema.define(:version => 20081018235633) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "updated_by"
-    t.integer  "version"
     t.integer  "release_id"
+    t.integer  "version"
   end
+
+  add_index "team_assignments", ["cluster_id", "team_id", "state_id"], :name => "index_team_assignments_on_cluster_id_and_team_id_and_state_id"
+  add_index "team_assignments", ["cluster_id", "state_id"], :name => "index_team_assignments_on_cluster_id_and_state_id"
 
   create_table "teams", :force => true do |t|
     t.string   "name"

@@ -3,7 +3,6 @@
 	<%=h @team.name %>
 </h1>
 
-
 <% form_for @team, :url => release_team_path(@release,@team) do |form|%>
 <table border="0">
 <h2></h2>
@@ -35,7 +34,7 @@
 		<% end %>
 	<% end %>
 </table>	
-    <%= submit_tag "Update", :confirm => 'Are you sure?', :style => 'display:none', :id => "button"%>
+    <%= submit_tag "Update", :confirm => 'Are you sure?', :id => "button"%>
 <% end %>
 <div id="tasks">
 </div>

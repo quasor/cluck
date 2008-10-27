@@ -1,19 +1,26 @@
   <h1><%=link_to @release.name, @release %> \ Dashboard</h1>
  
 <h2>Clusters</h2>
-<table border="0">
+<table border="0" cellspacing="0">
 <tr>
-	<th><%= link_to_unless_current 'Cluster', :sort => :cluster %></th>
-	<th><%= link_to_unless_current 'Status', :sort => :status %></th>
+	<th>Cluster</th>
+	<!-- <th>Status</th>	-->
+	<!-- <th>Cluster</th> -->
+	<!-- <th>Status</th>	-->
 </tr>
-<% for cluster in @clusters do %>
-	<tr>
-	<td>
-		<span style="background-color:<%= cluster.state.id != State.last.id ? "red" : "green" %>;padding:10px;margin-right:10px;">&nbsp;</span>
-		<%= cluster.name %></td>
-	<td><%= cluster.state.id != State.last.id ? "Shunted" : "Released To Web" %></td>
-</tr>
-<% end %>
-</table>
 
+<tr bgcolor="<%=cycle('#EEEEEE','#DDDDDD')%>">
+<% c = 0%>
+<% for cluster in @clusters do %>
+<% c = c + 1%>
+	<td nowrap>
+		<%= image_tag cluster.state.id != State.last.id ? "stop.png" : "go.png", :valign=>:middle %>
+		<%= cluster.name %></td>
+	<!-- 
+		<td><%= cluster.state.id != State.last.id ? "Shunted" : "Released To Web" %></td>
+  -->	
+<% if c % 4 == 0%></tr><tr bgcolor="<%=cycle('#EEEEEE','#DDDDDD')%>"><% end %>
+<% end %>
+</tr>
+</table>
 

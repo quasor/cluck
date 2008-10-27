@@ -15,17 +15,16 @@ class TeamsController < ApplicationController
   # GET /teams/1.xml
   def show
     @team = Team.find(params[:id])
-	if params[:release_id].nil?
-		return redirect_to(releases_path)
-	end
+	  if params[:release_id].nil?
+		  return redirect_to(releases_path)
+	  end
     @release = Release.find(params[:release_id])
-	@clusters = @team.clusters.find_all_by_release_id(@release.id)
-	#@team_assignments = @team.team_assignments.find(:all, :include => {:cluster => :release}, 
-	#	:conditions =>{'releases.id' => @release.id})
-	@team_assignments = @clusters.collect { |cluster| cluster.team_assignments.find(:all, :conditions => {:team_id => @team.id, :state_id => cluster.state_id}) }.flatten.uniq
-	@team_assignments = @team_assignments.sort_by { |r| r.cluster.state.sequence_number }
-	#@team_assignments = []
-	#@clusters.collect{}
+  	@clusters = @team.clusters.find_all_by_release_id(@release.id)
+  	@team_assignments = @clusters.collect { |cluster| cluster.team_assignments.find(:all, :conditions => {:team_id => @team.id, :state_id => cluster.state_id}) }.flatten.uniq
+  	@team_assignments = TeamAssignment.find(:all,:conditions => {:id => @team_assignments.collect(&:id)}, :include => {:cluster => :state }, :order => 'states.sequence_number, clusters.updated_at')
+  	#@team_assignments = @team_assignments.sort { |a,b| r.cluster.state.sequence_number }
+  	#@team_assignments = []
+  	#@clusters.collect{}
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @team }

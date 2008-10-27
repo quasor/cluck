@@ -46,7 +46,7 @@ class TeamAssignmentsController < ApplicationController
   # POST /team_assignments.xml
   def create
     @team_assignment = TeamAssignment.new(params[:team_assignment])
-
+    @team_assignment.signed_off = false
     respond_to do |format|
       if @team_assignment.save
         flash[:notice] = 'TeamAssignment was successfully created.'
@@ -63,7 +63,7 @@ class TeamAssignmentsController < ApplicationController
   # PUT /team_assignments/1.xml
   def update
     @team_assignment = TeamAssignment.find(params[:id])
-	@team_assignment.updated_by = current_user
+	  @team_assignment.updated_by = current_user
     respond_to do |format|
       if @team_assignment.update_attributes(params[:team_assignment])
         flash[:notice] = 'TeamAssignment was successfully updated.'

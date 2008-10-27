@@ -42,17 +42,8 @@ class ReleasesController < ApplicationController
   def dashboard
 	@refresh_interval = 60
     @release = Release.find(params[:id] )
-	@release.update_default_assignments
 	@order = :state_id
-	case params[:sort]
-	when 'cluster'
-		@order = 'clusters.name'
-	when 'status'
-		@order = :state_id
-	when 'owner'
-		@order = :state_id
-	end
-	@clusters = @release.clusters.find(:all, :order => @order)
+	@clusters = @release.clusters.find(:all, :include => :state, :order => "clusters.name")
 	@teams = Team.find(:all)
 	
     respond_to do |format|
