@@ -5,14 +5,18 @@
     <th>Name</th>
     <th>State</th>
     <th>Release</th>
+    <th>Cluster</th>
+    <th>Region</th>
+
   </tr>
 
 <% for cluster in @clusters %>
   <tr>
-    <td><%=h cluster.name %></td>
-    <td><%=h cluster.state_id %></td>
-    <td><%=h cluster.release_id %></td>
-    <td><%= link_to 'Show', cluster %></td>
+    <td><%=link_to cluster.name, cluster %></td>
+    <td><%=h cluster.state.name %></td>
+    <td><%=h cluster.release.name %></td>
+    <td><%=h cluster.group_list %></td>
+    <td><%=h cluster.region_list %></td>
     <td><%= link_to 'Edit', edit_cluster_path(cluster) %></td>
     <td><%= link_to 'Delete', cluster, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

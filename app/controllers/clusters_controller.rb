@@ -73,7 +73,7 @@ class ClustersController < ApplicationController
 		:updated_by => current_user)
 
 		flash[:notice] = 'Cluster was successfully updated.'
-        format.html { redirect_to(@cluster) }
+        format.html { redirect_to(clusters_path) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

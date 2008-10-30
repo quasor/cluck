@@ -1,26 +1,19 @@
   <h1><%=link_to @release.name, @release %> \ Dashboard</h1>
  
 <h2>Clusters</h2>
-<table border="0" cellspacing="0">
-<tr>
-	<th>Cluster</th>
-	<!-- <th>Status</th>	-->
-	<!-- <th>Cluster</th> -->
-	<!-- <th>Status</th>	-->
-</tr>
-
-<tr bgcolor="<%=cycle('#EEEEEE','#DDDDDD')%>">
-<% c = 0%>
-<% for cluster in @clusters do %>
-<% c = c + 1%>
-	<td nowrap>
-		<%= image_tag cluster.state.id != State.last.id ? "stop.png" : "go.png", :valign=>:middle %>
-		<%= cluster.name %></td>
-	<!-- 
-		<td><%= cluster.state.id != State.last.id ? "Shunted" : "Released To Web" %></td>
-  -->	
-<% if c % 4 == 0%></tr><tr bgcolor="<%=cycle('#EEEEEE','#DDDDDD')%>"><% end %>
-<% end %>
-</tr>
-</table>
+<% count = 0%>
+<% for tag in Tag.find(:all, :order => :name) 
+	clusters = Cluster.find_tagged_with(tag).find_all {|c| c.release_id == @release.id}
+	cluster_has_unshunted = clusters.collect { |c| c.unshunted? }.include? true
+	%>
+	<% unless clusters.empty?%>
+	<div class="cluster_block">
+		<% count = count + 1%>
+		<%= image_tag cluster_has_unshunted ? "go.png" : "stop.png", :valign=>:middle %>
+		<%= tag%>
+	<% end %>
+  </div>
+	<% if count % 4 == 0%></tr><tr bgcolor="<%=cycle('#EEEEEE','#DDDDDD')%>"><% end %>
+	<% end %>
+	
 

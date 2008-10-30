@@ -4,20 +4,26 @@
   <%= f.error_messages %>
 
   <p>
-    <%= f.label :name %><br />
+    <%= f.label :name %> <span class="help">(e.g. US Odds )</span><br />
     <%= f.text_field :name %>
   </p>
+
+  <p>
+    <%= f.label :cluster %> <span class="help">(e.g. US, Canada, UK)</span><br />
+    <%= f.text_field :group_list %>
+  </p>
+
+  <p>
+    <%= f.label :region %> <span class="help">(e.g. ENA, APAC)</span><br />
+    <%= f.text_field :region_list %>
+  </p>
+
   <p>
     <%= f.label :state_id %><br />
     <%= f.collection_select :state_id, State.find(:all), :id, :name %>
   </p>
 
- <!--
-  <p>
-    <%= f.label :release_id %><br />
-    <%= f.text_field :release_id %>
-  </p>
--->
+
   <p>
     <%= f.submit "Update" %>
   </p>

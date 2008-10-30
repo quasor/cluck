@@ -17,10 +17,8 @@ class ReleasesController < ApplicationController
   # GET /releases/1.xml
   def show
 	@refresh_interval = 60
-  @release = Release.find(params[:id] )
-	
-	@release.update_default_assignments if admin?
-	
+    @release = Release.find(params[:id] )
+	  @release.update_default_assignments
 	@order = :state_id
 	case params[:sort]
 	when 'cluster'

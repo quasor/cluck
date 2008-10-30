@@ -5,6 +5,8 @@ class Cluster < ActiveRecord::Base
   has_many :notes, :as => :notable
   validates_presence_of :release_id
   validates_uniqueness_of :name, :scope => :release_id
+  acts_as_taggable_on :groups
+  acts_as_taggable_on :regions
   
   def current_team_assignments
 	  team_assignments.find(:all, :conditions => ['state_id = ?',state.id]) 
@@ -27,9 +29,13 @@ class Cluster < ActiveRecord::Base
   end
   def promote!
     next_state = State.find(:first, :conditions => ['sequence_number > ?',state.sequence_number], :order => 'sequence_number ASC')
-	unless next_state.nil?
-		self.state_id = next_state.id
-		save!
-	end
+  	unless next_state.nil?
+  		self.state_id = next_state.id
+  		save!
+  	end
+  end
+  
+  def unshunted?
+    self.state == State.find(:first, :order => 'sequence_number DESC')
   end
 end
