@@ -7,7 +7,7 @@ group_tags = (Tagging.find_all_by_taggable_type("Cluster", :conditions => {:cont
 region_tags = (Tagging.find_all_by_taggable_type("Cluster", :conditions => {:context => 'regions'}).collect(&:tag).uniq.sort_by { |c| c.name })
 %>
 
-<table border="0" cellspacing="0" cellpadding="8">
+<table border="0" cellspacing="0" cellpadding="0">
 	<tr>
 <% for region_tag in region_tags%>
 	<td valign="top">
