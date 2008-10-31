@@ -2,7 +2,7 @@ class Cluster < ActiveRecord::Base
   belongs_to :state
   belongs_to :release
   has_many :team_assignments, :dependent => :destroy
-  has_many :notes, :as => :notable
+  has_many :notes, :as => :notable, :dependent => :destroy
   validates_presence_of :release_id
   validates_uniqueness_of :name, :scope => :release_id
   acts_as_taggable_on :groups
