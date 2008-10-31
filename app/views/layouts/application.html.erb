@@ -25,7 +25,7 @@
 <%= link_to_unless_current 'Releases', releases_path %>
 </div>
 <span style="float:right;text-align:center">
-<%= image_tag 'cluck.jpg'%>
+<%= image_tag 'cluck.jpg' unless controller.action_name != :dashboard%>
 <div style="position:relative;top:-220px;font-weight:bold">CLUCK</div>
 </span>
 
