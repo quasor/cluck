@@ -1,17 +1,32 @@
   <h1><%=link_to @release.name, @release %> \ Dashboard</h1>
  
-<h2>Clusters</h2>
 <% count = 0%>
-<% for tag in Tag.find(:all, :order => :name) 
-	clusters = Cluster.find_tagged_with(tag).find_all {|c| c.release_id == @release.id}
+
+<%
+group_tags = (Tagging.find_all_by_taggable_type("Cluster", :conditions => {:context => 'groups'}).collect(&:tag).uniq.sort_by { |c| c.name })
+region_tags = (Tagging.find_all_by_taggable_type("Cluster", :conditions => {:context => 'regions'}).collect(&:tag).uniq.sort_by { |c| c.name })
+%>
+
+<table border="1" cellspacing="0" cellpadding="8">
+	<tr>
+<% for region_tag in region_tags%>
+		<td valign="top">
+			<b><%= region_tag %></b>
+<% for group_tag in group_tags
+	clusters_in_group = Cluster.find_tagged_with(group_tag).find_all {|c| c.release_id == @release.id}
+	clusters_in_region = Cluster.find_tagged_with(region_tag).find_all {|c| c.release_id == @release.id}
+	clusters = clusters_in_region & clusters_in_group
 	cluster_has_unshunted = clusters.collect { |c| c.unshunted? }.include? true
 	%>
 	<% unless clusters.empty?%>
-	<div class="cluster_block">
+	<div class="cluster_blockz">
 		<% count = count + 1%>
-		<%= image_tag cluster_has_unshunted ? "go.png" : "stop.png", :valign=>:middle %>&nbsp;<%= tag%>
+		<%= image_tag cluster_has_unshunted ? "go.png" : "stop.png", :valign=>:middle %>&nbsp;<%= group_tag%>
 	<% end %> 
   </div>
 	<% end %>
-	
+		</td>
+<% end %>
+	</tr>
+</table>	
 
