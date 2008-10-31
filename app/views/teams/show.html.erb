@@ -26,7 +26,7 @@
 			<td>
 				<% note = @cluster.notes.last%>
 				<% if note %>
-				<b><%= note.created_by %></b> on <%= note.created_at.to_s(:short)%>:<br><%= note.body%>
+					<b><%= note.created_by %></b> on <%= note.created_at.to_s(:short)%>:<br><%= note.body%>
 				<% end %>			
 			</td>
 			<% end %>
@@ -34,7 +34,10 @@
 		<% end %>
 	<% end %>
 </table>	
-    <%= submit_tag "Update", :confirm => 'Are you sure?', :id => "button"%>
+    <%= submit_tag "Update", :confirm => 'Are you sure?', :id => "button" unless @team_assignments.empty?%>
+		<% if @team_assignments.empty?%>
+		No clusters currently assigned to you.
+		<% end %>
 <% end %>
 <div id="tasks">
 </div>

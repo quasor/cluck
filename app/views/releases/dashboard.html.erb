@@ -9,9 +9,8 @@
 	<% unless clusters.empty?%>
 	<div class="cluster_block">
 		<% count = count + 1%>
-		<%= image_tag cluster_has_unshunted ? "go.png" : "stop.png", :valign=>:middle %>
-		<%= tag%>
-	<% end %>
+		<%= image_tag cluster_has_unshunted ? "go.png" : "stop.png", :valign=>:middle %>&nbsp;<%= tag%>
+	<% end %> 
   </div>
 	<% if count % 4 == 0%></tr><tr bgcolor="<%=cycle('#EEEEEE','#DDDDDD')%>"><% end %>
 	<% end %>
