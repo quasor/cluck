@@ -14,7 +14,10 @@ class Release < ActiveRecord::Base
   
   def clone_from(src)
 	for cluster in src.clusters
+		# TODO make shallow copy
 		c = Cluster.new(:name => cluster.name)
+		c.group_list = cluster.group_list
+		c.region_list = cluster.region_list
 		self.clusters << c
 		for team_assignment in cluster.team_assignments
 			TeamAssignment.create(:cluster_id => c.id, :team_id => team_assignment.team_id, :state_id => team_assignment.state_id, :signed_off => false)

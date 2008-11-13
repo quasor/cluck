@@ -2,7 +2,7 @@
 #   gem install sqlite3-ruby (not necessary on OS X Leopard)
 development:
     adapter: mysql
-    database: cluck_development
+    database: cluck_production
     username: root
     password: 
     host: 127.0.0.1
