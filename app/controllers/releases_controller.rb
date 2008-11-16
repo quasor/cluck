@@ -42,11 +42,11 @@ class ReleasesController < ApplicationController
   # GET /releases/1/dashboard
   # GET /releases/1/dashboard.xml
   def dashboard
-	@refresh_interval = 60
+	  @refresh_interval = 60
     @release = Release.find(params[:id] )
-	@order = :state_id
-	@clusters = @release.clusters.find(:all, :include => :state, :order => "clusters.name")
-	@teams = Team.find(:all)
+  	@order = :state_id
+  	@clusters = @release.clusters.find(:all, :include => :state, :order => "clusters.name")
+  	@teams = Team.find(:all)
 	
     respond_to do |format|
       format.html # show.html.erb
@@ -57,9 +57,9 @@ class ReleasesController < ApplicationController
   #  GET /releases/1/report
   # GET /releases/1//report.xml
   def report
-	@release = Release.find(params[:id]) unless params[:id].blank?
-    @team_assignments = Event.find(:all, :order => :updated_at, :conditions => {:release_id => @release})
-
+	  @release = Release.find(params[:id]) unless params[:id].blank?
+    #@events = Event.find(:all, :order => :updated_at, :conditions => {:release_id => @release})
+    @events = Event.find(:all, :group => "cluster_id, team_assignment_id, state_id",:order => "updated_at", :conditions => {:release_id => @release})
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @team_assignments }
@@ -127,7 +127,7 @@ class ReleasesController < ApplicationController
     @release.destroy
 
     respond_to do |format|
-      format.htmldef destroy { redirect_to(releases_url) }
+      format.html { redirect_to(releases_url) }
       format.xml  { head :ok }
     end
   end

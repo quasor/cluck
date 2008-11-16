@@ -14,20 +14,15 @@
     <th>By</th>
   </tr>
 
-<% for team_assignment in @team_assignments %>
+<% for event in @events %>
   <tr>
-    <td><%=h team_assignment.cluster.name %></td>
-    <td><%=team_assignment.team_assignment.nil? ? "Admin" : team_assignment.team_assignment.team.name %></td>
-    <td><%=h team_assignment.state.name %></td>
-    <td><%=h team_assignment.action %></td>
-    <td><%=h team_assignment.signed_off %></td>
-    <td><%=h team_assignment.updated_at.to_s(:short) %></td>
-    <td><%=h team_assignment.updated_by %></td>
-<% if false %>
-    <td><%= link_to 'Show', team_assignment %></td>
-    <td><%= link_to 'Edit', edit_team_assignment_path(team_assignment) %></td>
-    <td><%= link_to 'Delete', team_assignment, :confirm => 'Are you sure?', :method => :delete %></td>
-<% end %> 
+    <td><%=h event.cluster.name %></td>
+    <td><%=event.team_assignment.nil? ? "Admin" : event.team_assignment.team.name %></td>
+    <td><%=h event.state.name %></td>
+    <td><%=h event.action %></td>
+    <td><%=h event.signed_off %></td>
+    <td nowrap><%=h event.updated_at %></td>
+    <td><%=h event.updated_by %></td>
   </tr>
 
   <% end %>

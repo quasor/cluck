@@ -18,11 +18,13 @@
 <table>
   <tr>
     <th>Test Team</th>
+		<th>Assignment</th>
     <th>Signed off</th>
   </tr>
-	<% for team_assignment in @cluster.team_assignments.assignment_is(State.find_by_name('RTT')) %>
+	<% for team_assignment in @cluster.team_assignments#.assignment_is(State.find_by_name('RTT')) %>
   <tr>
     <td><%=h team_assignment.team.name %></td>
+		<td><%=team_assignment.state.name%></td>
     <td><%=h team_assignment.signed_off %></td>
 	<% if admin? %>
     <td><%= link_to 'Delete Assignment', team_assignment, :confirm => 'Are you sure?', :method => :delete %></td>

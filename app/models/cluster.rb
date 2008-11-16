@@ -11,22 +11,26 @@ class Cluster < ActiveRecord::Base
   def current_team_assignments
 	  team_assignments.find(:all, :conditions => ['state_id = ?',state.id]) 
   end
-  after_update do |record|
-  	record.team_assignments.find(:all, :conditions => ['state_id >= ?',record.state.id], :order => 'state_id ASC').each do |ta|
-#  		ta.signed_off = false
-  		ta.save
+
+  def clear_signoffs
+    next_states = State.find(:all, :conditions => ['sequence_number >= ?',state.sequence_number], :order => 'sequence_number ASC').collect(&:id)
+  	team_assignments.find(:all, :conditions => {:state_id => next_states}).each do |ta|    
+  	  ta.signed_off = false
+  	  ta.save
   	end
   end
   
   def body
   end
+  
   def reinit
-   next_state = State.find(:first, :conditions => ['sequence_number > ?',0], :order => 'sequence_number ASC')
-	unless next_state.nil?
-		self.state_id = next_state.id
-		save!
-	end
+    next_state = State.find(:first, :conditions => ['sequence_number > ?',0], :order => 'sequence_number ASC')
+  	unless next_state.nil?
+  		self.state_id = next_state.id
+  		save!
+  	end
   end
+  
   def promote!
     next_state = State.find(:first, :conditions => ['sequence_number > ?',state.sequence_number], :order => 'sequence_number ASC')
   	unless next_state.nil?
