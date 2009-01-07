@@ -21,7 +21,7 @@
     <td><%=h event.state.name %></td>
     <td><%=h event.action %></td>
     <td><%=h event.signed_off %></td>
-    <td nowrap><%=h event.updated_at %></td>
+    <td nowrap><%=h event.updated_at.to_s(:db)  %></td>
     <td><%=h event.updated_by %></td>
   </tr>
 
