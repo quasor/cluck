@@ -29,6 +29,8 @@ class ReleasesController < ApplicationController
 		@order = :state_id
 	when 'owner'
 		@order = :state_id
+	else
+		@order = 'clusters.name'
 	end
 	@clusters = @release.clusters.find(:all, :order => @order)
 	@teams = Team.find(:all)
