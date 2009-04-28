@@ -13,26 +13,27 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   # filter_parameter_logging :password
   def authorized
-	admin?
+	  admin?
   end
   def login_required
-	authenticate
+	  authenticate
   end
   def admin?
-	if current_user.nil?
-		false
-	else
-		%(sanuras acoldham aprice ljasper gzhao kpatton).include? current_user
-	end
+  	if current_user.nil?
+  		false
+  	else
+  		%(sanuras acoldham aprice ljasper gzhao kpatton).include? current_user
+  	end
   end
+
   def current_user
-	session[:username]
+	  session[:username]
   end
 
   private
 	  USER_NAME = 'sandy'
 	  PASSWORD = 'mttpower'
-	  def authenticate
+	def authenticate
 		session[:attempted_auth] = false
 		if current_user.nil? and session[:attempted_auth] == false
 			session[:attempted_auth] = true
@@ -43,6 +44,6 @@ class ApplicationController < ActionController::Base
 			#  username == USER_NAME && password == PASSWORD
 			#end
 		end
-	  end
+	end
 
 end

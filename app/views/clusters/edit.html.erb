@@ -19,6 +19,11 @@
   </p>
 
   <p>
+    <%= f.label :type %> <span class="help">(e.g. Web, TS)</span><br />
+    <%= f.text_field :type_list %>
+  </p>
+
+  <p>
     <%= f.label :state_id %><br />
     <%= f.collection_select :state_id, State.find(:all), :id, :name %>
   </p>

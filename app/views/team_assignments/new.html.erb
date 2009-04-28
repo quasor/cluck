@@ -11,8 +11,8 @@ for <%=@cluster.name%> (<%= @cluster.release.name%>)
     <%= f.collection_select :team_id, Team.find(:all), :id, :name, {:prompt => :true} %>
   </p>
     <% @team_assignment.state_id = State.find_by_name("RTT").id %>
-    <%#= f.label :state_id %><br />
-    <%#= f.collection_select :state_id, State.find(:all), :id, :name %>
+    <%= f.label :state_id %><br />
+    <%= f.collection_select :state_id, State.find(:all), :id, :name %>
 	<%= f.hidden_field :state_id %>
   <p>
     <%= f.submit "Create" %>

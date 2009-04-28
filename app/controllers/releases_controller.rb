@@ -20,6 +20,7 @@ class ReleasesController < ApplicationController
   @release = Release.find(params[:id] )
 	
 	@release.update_default_assignments if admin?
+	@release.auto_promote_empty
 	
 	@order = :state_id
 	case params[:sort]
@@ -33,6 +34,8 @@ class ReleasesController < ApplicationController
 		@order = 'clusters.name'
 	end
 	@clusters = @release.clusters.find(:all, :order => @order)
+	@travel_servers = Cluster.find_tagged_with("TS").find_all {|c| c.release_id == @release.id}
+	@clusters = @clusters - @travel_servers
 	@teams = Team.find(:all)
 	
     respond_to do |format|

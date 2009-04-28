@@ -84,20 +84,20 @@ ActiveRecord::Schema.define(:version => 20081028060014) do
   create_table "team_assignment_versions", :force => true do |t|
     t.integer  "team_assignment_id"
     t.integer  "version"
-    t.integer  "cluster_id"
-    t.integer  "team_id"
-    t.integer  "state_id"
-    t.boolean  "signed_off",         :default => false
+    t.integer  "cluster_id",         :limit => 8
+    t.integer  "team_id",            :limit => 8
+    t.integer  "state_id",           :limit => 8
+    t.boolean  "signed_off"
     t.datetime "updated_at"
     t.string   "updated_by"
-    t.integer  "release_id"
+    t.integer  "release_id",         :limit => 8
   end
 
   create_table "team_assignments", :force => true do |t|
     t.integer  "cluster_id"
     t.integer  "team_id"
     t.integer  "state_id"
-    t.boolean  "signed_off", :default => false
+    t.boolean  "signed_off"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "updated_by"

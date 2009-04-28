@@ -76,7 +76,7 @@ class ClustersController < ApplicationController
 
 		    flash[:notice] = 'Cluster was successfully updated.'
 		    @cluster.clear_signoffs
-        format.html { redirect_to(clusters_path) }
+        format.html { redirect_to(@cluster.release) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

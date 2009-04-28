@@ -13,7 +13,7 @@
 <% for cluster in @clusters do %>
 	<tr>
 	<td><%= link_to cluster.name, cluster%></td>
-	<td><%= cluster.state.name%></td>
+	<td><%= cluster.state.name if cluster.state%></td>
 	<td>
 		<% for team_assignment in cluster.current_team_assignments %>
 			<span style="padding-right:20px;">

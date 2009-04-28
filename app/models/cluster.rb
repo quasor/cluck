@@ -7,6 +7,7 @@ class Cluster < ActiveRecord::Base
   validates_uniqueness_of :name, :scope => :release_id
   acts_as_taggable_on :groups
   acts_as_taggable_on :regions
+	acts_as_taggable_on :type
   
   def current_team_assignments
 	  team_assignments.find(:all, :conditions => ['state_id = ?',state.id]) 
@@ -24,17 +25,22 @@ class Cluster < ActiveRecord::Base
   end
   
   def reinit
-    next_state = State.find(:first, :conditions => ['sequence_number > ?',0], :order => 'sequence_number ASC')
-  	unless next_state.nil?
-  		self.state_id = next_state.id
+		next_assignemnt = team_assignments.find(:first,:include => :state, :conditions => ['states.sequence_number > ?',0], :order => 'states.sequence_number ASC')
+  	unless next_assignemnt.nil?
+  		self.state_id = next_assignemnt.state.id
   		save!
   	end
   end
-  
   def promote!
-    next_state = State.find(:first, :conditions => ['sequence_number > ?',state.sequence_number], :order => 'sequence_number ASC')
-  	unless next_state.nil?
+    #next_state = State.find(:first, :conditions => ['sequence_number > ?',state.sequence_number], :order => 'sequence_number ASC')
+		next_assignment = team_assignments.find(:first,:include => :state, :conditions => ['states.sequence_number > ?',state.sequence_number], :order => 'states.sequence_number ASC')
+		if next_assignment.nil? && !self.type_list.include?("TS")
+			next_state = State.find(:first, :conditions => ['sequence_number > ?',state.sequence_number], :order => 'sequence_number ASC')
   		self.state_id = next_state.id
+  		save!
+		end
+  	unless next_assignment.nil?
+  		self.state_id = next_assignment.state.id
   		save!
   	end
   end

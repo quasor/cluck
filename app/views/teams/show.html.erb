@@ -3,42 +3,64 @@
 	<%=h @team.name %>
 </h1>
 
-<% form_for @team, :url => release_team_path(@release,@team) do |form|%>
-<table border="0">
-<h2></h2>
-	<tr>
-		<th>Cluster</th>
-		<th>Status</th>
-		<th>Push to Next State</th>
-		<th>Notes</th>
-		<th>Last Note</th>
-	</tr>
-	<% for @team_assignment in @team_assignments do %>
-	  <% fields_for 'team_assignment[]' do |f| %>
-		<tr>
-			<td><%= error_messages_for :team_assignment %><%= link_to @team_assignment.cluster.name, @team_assignment.cluster %></td>
-			<td><%= @team_assignment.cluster.state.name%></td>
-		    <td align="center"><%= f.check_box :signed_off, :onclick => "$('button').show()"%></td>
-			<%
-			@cluster = @team_assignment.cluster
-			fields_for 'cluster[]' do |fn| %>
-			<td><%=fn.text_area :body, :rows => 4%></td>
-			<td>
-				<% note = @cluster.notes.last%>
-				<% if note %>
-					<b><%= note.created_by %></b> on <%= note.created_at.to_s(:short)%>:<br><%= note.body%>
-				<% end %>			
-			</td>
-			<% end %>
-		</tr>
-		<% end %>
+<% 
+type_tags = (Tagging.find_all_by_taggable_type("Cluster", :conditions => {:context => 'type'}).collect(&:tag).uniq.sort_by { |c| c.name })
+%>
+<% for type_tag in type_tags
+	clusters_in_group = Cluster.find_tagged_with(type_tag).find_all {|c| c.release_id == @release.id}
+	@tas = clusters_in_group.collect { |cluster| cluster.team_assignments.find(:all, :conditions => {:team_id => @team.id, :state_id => cluster.state_id}) }.flatten.uniq
+%>
+	<% if @tas.size > 0 && type_tags.size > 1 %>
+		<a href="#<%=type_tag%>"><%=type_tag%> (<%= @tas.partition{|ta| ta.signed_off}[1].size%>)</a>
 	<% end %>
-</table>	
-    <%= submit_tag "Update", :confirm => 'Are you sure?', :id => "button" unless @team_assignments.empty?%>
-		<% if @team_assignments.empty?%>
-		No clusters currently assigned to you.
+<% end %>	
+	<% form_for @team, :url => release_team_path(@release,@team) do |form|%>
+	<table border="0">
+		<tr>
+			<th>Cluster</th>
+			<th>Status</th>
+			<th>Push to Next State</th>
+			<th>Notes</th>
+			<th>Last Note</th>
+		</tr>
+		<% for type_tag in type_tags
+			clusters_in_group = Cluster.find_tagged_with(type_tag).find_all {|c| c.release_id == @release.id}
+			@tas = clusters_in_group.collect { |cluster| cluster.team_assignments.find(:all, :conditions => {:team_id => @team.id, :state_id => cluster.state_id}) }.flatten.uniq
+		%>
+		<% if @tas.size > 0%><tr><td colspan="5"><h2><a name="<%=type_tag%>"><%= type_tag %></h2></td></tr><% end %>
+
+		<% for @team_assignment in @tas do %>
+		  <% fields_for 'team_assignment[]' do |f| %>
+			<tr>
+				<td><%= error_messages_for :team_assignment %><%= link_to @team_assignment.cluster.name, @team_assignment.cluster %></td>
+				<td><%= @team_assignment.cluster.state.name%></td>
+			    <td align="center"><%= f.check_box :signed_off, :onclick => "$('button').show()"%></td>
+				<%
+				@cluster = @team_assignment.cluster
+				fields_for 'cluster[]' do |fn| %>
+				<td><%=fn.text_area :body, :rows => 4%></td>
+				<td>
+					<% note = @cluster.notes.last%>
+					<% if note %>
+						<b><%= note.created_by %></b> on <%= note.created_at.to_s(:short)%>:<br><%= note.body%>
+					<% end %>			
+				</td>
+				<% end %>
+			</tr>
+			<% end %>
 		<% end %>
-<% end %>
+			
+		<% if @tas.size > 0%><tr><td colspan="6"><hr></td></tr><% end %>
+
+		<% end %>
+
+	</table>	
+	    <%= submit_tag "Update", :confirm => 'Are you sure?', :id => "button" unless @team_assignments.empty?%>
+			<% if @team_assignments.empty?%>
+			No clusters currently assigned to you.
+			<% end %>
+	<% end %>
+
 <div id="tasks">
 </div>
 

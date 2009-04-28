@@ -18,6 +18,10 @@
     <%= f.text_field :region_list %>
   </p>
   <p>
+    <%= f.label :type %> <span class="help">(e.g. Web, TS)</span><br />
+    <%= f.text_field :type_list %>
+  </p>
+  <p>
     <%= f.label :release_id %><br />
     <%= f.collection_select :release_id, Release.find(:all), :id, :name, {:prompt => :true} %>
   </p>
