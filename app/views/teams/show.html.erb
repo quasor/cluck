@@ -4,62 +4,71 @@
 </h1>
 
 <% 
-type_tags = (Tagging.find_all_by_taggable_type("Cluster", :conditions => {:context => 'type'}).collect(&:tag).uniq.sort_by { |c| c.name })
 %>
-<% for type_tag in type_tags
-	clusters_in_group = Cluster.find_tagged_with(type_tag).find_all {|c| c.release_id == @release.id}
-	@tas = clusters_in_group.collect { |cluster| cluster.team_assignments.find(:all, :conditions => {:team_id => @team.id, :state_id => cluster.state_id}) }.flatten.uniq
-%>
-	<% if @tas.size > 0 && type_tags.size > 1 %>
-		<a href="#<%=type_tag%>"><%=type_tag%> (<%= @tas.partition{|ta| ta.signed_off}[1].size%>)</a>
-	<% end %>
-<% end %>	
-	<% form_for @team, :url => release_team_path(@release,@team) do |form|%>
-	<table border="0">
+
+<% if @types.size > 1%>
+	<div id="tabs">
+		<span class="spacer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+		<% for type_tag in @types
+				clusters_in_group = Cluster.find_tagged_with(type_tag).find_all {|c| c.release_id == @release.id}
+				@tas = clusters_in_group.collect { |cluster| cluster.team_assignments.find(:all, :conditions => {:team_id => @team.id, :state_id => cluster.state_id}) }.flatten.uniq
+		-%>
+				<% if @tas.size > 0 && @types.size > 1 -%>
+					<%= link_to_unless_current type_tag.to_s + " (#{@tas.partition{|ta| ta.signed_off}[1].size})", release_team_path(:t => type_tag.to_s)  do 
+						content_tag :span, type_tag.to_s + " (#{@tas.partition{|ta| ta.signed_off}[1].size})", :class => "selected"
+					end
+					-%>
+				<% end -%>
+		<% end -%>
+	</div>
+<% end %>
+
+<% form_for @team, :url => release_team_path(@release,@team) do |form|%>
+<table border="0">
+	<tr>
+		<th>Cluster</th>
+		<% unless @type == "TS"%><th>Status</th><% end %>
+		<th><% if @type == "TS"%>Signed off?<%else%>Push to Next State</th><% end %>
+		<th>Notes</th>
+		<th>Last Note</th>
+	</tr>
+	<% #for type_tag in @types
+		clusters_in_group = Cluster.find_tagged_with(@type).find_all {|c| c.release_id == @release.id}
+		@tas = clusters_in_group.collect { |cluster| cluster.team_assignments.find(:all, :conditions => {:team_id => @team.id, :state_id => cluster.state_id}) }.flatten.uniq
+	%>
+	<% if @tas.size > 0%><tr><td colspan="5"><h2><a name="<%=type_tag%>"><%= @type %></h2></td></tr><% end %>
+
+	<% for @team_assignment in @tas do %>
+	  <% fields_for 'team_assignment[]' do |f| %>
 		<tr>
-			<th>Cluster</th>
-			<th>Status</th>
-			<th>Push to Next State</th>
-			<th>Notes</th>
-			<th>Last Note</th>
+			<td><%= error_messages_for :team_assignment %><%= link_to @team_assignment.cluster.name, @team_assignment.cluster %></td>
+			<% unless @type == "TS"%><td><%= @team_assignment.cluster.state.name%></td><% end %>
+		  <td align="center"><%= f.check_box :signed_off, :onclick => "$('button').show()"%></td>
+			<%
+			@cluster = @team_assignment.cluster
+			fields_for 'cluster[]' do |fn| %>
+			<td><%=fn.text_area :body, :rows => 4%></td>
+			<td>
+				<% note = @cluster.notes.last%>
+				<% if note %>
+					<b><%= note.created_by %></b> on <%= note.created_at.to_s(:short)%>:<br><%= note.body%>
+				<% end %>			
+			</td>
+			<% end %>
 		</tr>
-		<% for type_tag in type_tags
-			clusters_in_group = Cluster.find_tagged_with(type_tag).find_all {|c| c.release_id == @release.id}
-			@tas = clusters_in_group.collect { |cluster| cluster.team_assignments.find(:all, :conditions => {:team_id => @team.id, :state_id => cluster.state_id}) }.flatten.uniq
-		%>
-		<% if @tas.size > 0%><tr><td colspan="5"><h2><a name="<%=type_tag%>"><%= type_tag %></h2></td></tr><% end %>
-
-		<% for @team_assignment in @tas do %>
-		  <% fields_for 'team_assignment[]' do |f| %>
-			<tr>
-				<td><%= error_messages_for :team_assignment %><%= link_to @team_assignment.cluster.name, @team_assignment.cluster %></td>
-				<td><%= @team_assignment.cluster.state.name%></td>
-			    <td align="center"><%= f.check_box :signed_off, :onclick => "$('button').show()"%></td>
-				<%
-				@cluster = @team_assignment.cluster
-				fields_for 'cluster[]' do |fn| %>
-				<td><%=fn.text_area :body, :rows => 4%></td>
-				<td>
-					<% note = @cluster.notes.last%>
-					<% if note %>
-						<b><%= note.created_by %></b> on <%= note.created_at.to_s(:short)%>:<br><%= note.body%>
-					<% end %>			
-				</td>
-				<% end %>
-			</tr>
-			<% end %>
 		<% end %>
-			
-		<% if @tas.size > 0%><tr><td colspan="6"><hr></td></tr><% end %>
+	<%# end %>
+		
+	<% if @tas.size > 0%><tr><td colspan="6"><hr></td></tr><% end %>
 
-		<% end %>
-
-	</table>	
-	    <%= submit_tag "Update", :confirm => 'Are you sure?', :id => "button" unless @team_assignments.empty?%>
-			<% if @team_assignments.empty?%>
-			No clusters currently assigned to you.
-			<% end %>
 	<% end %>
+
+</table>	
+    <%= submit_tag "Update", :confirm => 'Are you sure?', :id => "button" unless @team_assignments.empty?%>
+		<% if @team_assignments.empty?%>
+		No clusters currently assigned to you.
+		<% end %>
+<% end %>
 
 <div id="tasks">
 </div>

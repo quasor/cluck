@@ -60,3 +60,24 @@ table td { padding-right: 60px }
 	float:left;
 	width:180px;
 }
+#tabs { 
+	padding-top:16px;
+	background-color:#DDD;
+	border-bottom:1px solid #777;
+	margin-bottom:2px;
+}
+#tabs .spacer {
+	width:200px;
+	margin:0;
+}
+#tabs .selected { border-top: 1px solid #777; padding-left:1em;padding-right:1em; 
+	border-right: 1px solid #777; border-left: 1px solid #777; 
+	margin:0; position:relative; top:2px;z-index:2; background-color:white;}
+
+#tabs a { 
+	padding-left:1em; padding-right:1em;
+	text-decoration:none;
+	border-top: 1px solid #777;
+	border-right: 1px solid #777; border-left: 1px solid #777; 
+	margin:0; position:relative; top:2px;z-index:2;
+	}

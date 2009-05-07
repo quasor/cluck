@@ -22,9 +22,16 @@ class TeamsController < ApplicationController
   	@clusters = @team.clusters.find_all_by_release_id(@release.id)
   	@team_assignments = @clusters.collect { |cluster| cluster.team_assignments.find(:all, :conditions => {:team_id => @team.id, :state_id => cluster.state_id}) }.flatten.uniq
   	@team_assignments = TeamAssignment.find(:all,:conditions => {:id => @team_assignments.collect(&:id)}, :include => {:cluster => :state }, :order => 'states.sequence_number, clusters.updated_at')
-  	#@team_assignments = @team_assignments.sort { |a,b| r.cluster.state.sequence_number }
-  	#@team_assignments = []
-  	#@clusters.collect{}
+
+		@types = @clusters.collect(&:type).flatten.uniq		
+		
+		if !@types.empty? && params[:t].blank?
+			@type = @types.first.to_s
+			return redirect_to release_team_path(:t => @type.to_s)
+		else
+			@type = params[:t]
+		end
+
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @team }

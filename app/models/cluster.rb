@@ -8,6 +8,7 @@ class Cluster < ActiveRecord::Base
   acts_as_taggable_on :groups
   acts_as_taggable_on :regions
 	acts_as_taggable_on :type
+	validates_presence_of :type_list
   
   def current_team_assignments
 	  team_assignments.find(:all, :conditions => ['state_id = ?',state.id]) 
