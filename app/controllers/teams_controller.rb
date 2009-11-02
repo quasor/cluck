@@ -117,7 +117,7 @@ class TeamsController < ApplicationController
     @team.destroy
 
     respond_to do |format|
-      format.htmldef destroy { redirect_to(teams_url) }
+      format.html { redirect_to(teams_url) }
       format.xml  { head :ok }
     end
   end

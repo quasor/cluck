@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   	if current_user.nil?
   		false
   	else
-  		%(sanuras acoldham aprice ljasper gzhao kpatton).include? current_user
+  		%(sanuras acoldham aprice ljasper molander kpatton).include? current_user
   	end
   end
 

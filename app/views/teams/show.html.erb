@@ -28,7 +28,9 @@
 	<tr>
 		<th>Cluster</th>
 		<% unless @type == "TS"%><th>Status</th><% end %>
-		<th><% if @type == "TS"%>Signed off?<%else%>Push to Next State</th><% end %>
+		<th><% if @type == "TS"%>Signed off?<%else%>Push to Next State<% end %>
+		  <input type="checkbox" onclick="checkall(this.checked)">
+		</th>
 		<th>Notes</th>
 		<th>Last Note</th>
 	</tr>
@@ -75,3 +77,12 @@
 
 <%#= link_to 'Edit', edit_team_path(@team) %> 
 <%#= link_to 'Back', teams_path %>
+
+<script type="text/javascript" charset="utf-8">
+  function checkall(check)
+  {
+    var checkboxes = [];
+    checkboxes = $$('input').each(function(e){ if(e.type == 'checkbox') checkboxes.push(e) });
+    checkboxes.each(function(e){e.checked = check;});
+  }
+</script>
